@@ -129,7 +129,7 @@ void runServer() {
   // Route for root / web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
     request->send_P(200, "text/html", index_html);
-    //request->send(fileSystem, "/index.html", "text/html");
+    //request->send(fileSystem, "/index.html", "text/html"); // External file not working
   });
 
   server.on("/capture", HTTP_GET, [](AsyncWebServerRequest * request) {
