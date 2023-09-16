@@ -19,6 +19,7 @@
 //#define CAMERA_MODEL_M5STACK_WIDE
 #define CAMERA_MODEL_AI_THINKER
 #include "camera_pins.h"
+#include "get_frames.h"
 
 // WiFi Config
 static const char* ssid = "WIND_9138C1";
@@ -119,6 +120,9 @@ void loop() {
     capturePhotoSave();
     takeNewPhoto = false;
   }
+
+  do_somthing_with_frames();
+
   delay(1);
 }
 
@@ -214,11 +218,11 @@ void setupCamera() {
   config.pixel_format = PIXFORMAT_JPEG;
   //init with high specs to pre-allocate larger buffers
   if(psramFound()){
-    config.frame_size = FRAMESIZE_UXGA;
+    config.frame_size = FRAMESIZE_FHD;
     config.jpeg_quality = 10;
     config.fb_count = 2;
   } else {
-    config.frame_size = FRAMESIZE_SVGA;
+    config.frame_size = FRAMESIZE_UXGA;
     config.jpeg_quality = 12;
     config.fb_count = 1;
   }
@@ -268,7 +272,7 @@ void capturePhotoSave( void ) {
     // Save Image
     writeFilePic(fileSystem, file_name, fb);
 
-    // Return Camera to Normaly Mode
+    // Return the frame buffer to be reused again.
     esp_camera_fb_return(fb);
 
     // check if file has been correctly saved
